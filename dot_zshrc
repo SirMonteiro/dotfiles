@@ -1,0 +1,97 @@
+
+#if [ "$(tty)" = "/dev/tty1" ]; then
+#	exec startplasma-wayland
+#	exit
+#fi
+if [ "$(tty)" = "/dev/tty2" ]; then
+	exec Hyprland
+fi
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=10000
+setopt autocd
+bindkey -v
+# End of lines configured by zsh-newuser-install
+
+# The following lines were added by compinstall
+
+fpath=(/usr/share/zsh/site-functions $fpath)
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+
+zstyle ':completion:*' menu select
+
+# Better SSH/Rsync/SCP Autocomplete
+zstyle ':completion:*:(scp|rsync):*' tag-order ' hosts:-ipaddr:ip\ address hosts:-host:host files'
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-host' ignored-patterns '*(.|:)*' loopback ip6-loopback localhost ip6-localhost broadcasthost
+zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<->.<->.<->|(|::)([[:xdigit:].]##:(#c,2))##(|%*))' '127.0.0.<->' '255.255.255.255' '::1' 'fe80::*'
+
+zstyle ':completion:*' completer _complete _ignored
+zstyle :compinstall filename '/home/gabriel/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+source ~/.local/share/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+export PATH=/home/gabriel/.local/bin:$PATH
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+# rm with safeguard: https://github.com/sindresorhus/guides/blob/main/how-not-to-rm-yourself.md
+unsetopt RM_STAR_SILENT
+alias rm="rm -i"
+
+#export SSH_AUTH_SOCK="$XDG_RUNTIME_DIR/ssh-agent.socket"
+export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/gcr/ssh
+export BAT_THEME="Dracula"
+export BAT_STYLE="numbers"
+
+bindkey "^A" vi-beginning-of-line
+bindkey "^E" vi-end-of-line
+
+alias ls="eza --icons"
+alias ll="eza --icons -l"
+alias la="eza --icons -la"
+alias sl="ls"
+alias al="la"
+alias ncdu="ncdu --color off"
+alias yay="paru"
+#alias ssh="kitty +kitten ssh"
+alias ssh="TERM=xterm-256color ssh"
+#alias vencordinstaller="xhost si:localhost:root && sudo -E vencordinstaller && xhost -si:localhost:root"
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias screenShotOCT="flameshot gui --raw | tesseract stdin stdout | wl-copy"
+alias wattage="awk '{print $1*10^-6 \" W\"}' /sys/class/power_supply/BAT0/power_now"
+#alias e="tlp-stat -s | tail -n3 | head -n2"
+
+alias myip="curl ipv4.icanhazip.com"
+alias openports="sudo ss -tulpn4 | grep LISTEN"
+alias isvpnusp="curl -L icmc.usp.br/vpn --stderr - | grep \"Para\" | wc -l"
+alias mountapfs="sudo apfs-fuse -o uid=0,gid=0,allow_other /dev/sda2 /macos"
+alias turnONHomePC="\ssh root@homelab.gabrielsouza.top -p 40022 -i ~/.ssh/id_gargoyle -oKexAlgorithms=diffie-hellman-group14-sha1 -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa wol -i 192.168.1.255 74:D0:2B:2B:C3:11"
+alias turnONFamilyPC="\ssh root@homelab.gabrielsouza.top -p 40022 -i ~/.ssh/id_gargoyle -oKexAlgorithms=diffie-hellman-group14-sha1 -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedKeyTypes=+ssh-rsa wol -i 192.168.1.255 04:D9:F5:0A:06:9A"
+
+function pix() {
+    local chave="$1"
+    local info="$2"
+    local valor="$3"
+
+    curl -sX POST https://pix.ae -d "tipo=cpf&chave=${chave}&nome=Gabriel&info=${info}&valor=${valor}" | \
+    jq '.qrstring' | tail -c +2 | head -c -2 | qrencode -t ansiutf8
+}
+
+source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+

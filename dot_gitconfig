@@ -1,0 +1,20 @@
+[user]
+	email = gabrielmonteirodesouza@tutanota.com
+	name = Gabriel de Souza
+	signingkey = C47FF38A79A3E3AC96DDCE4AA64E5B0F74A14F80
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
+[tag]
+	forceSignAnnotated = true
+[core]
+	editor = vim
+[color]
+	ui = true
+[merge]
+	conflictstyle = zdiff3
+[help]
+	autocorrect = prompt
+[branch]
+	sort = -committerdate

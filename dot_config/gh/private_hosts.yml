@@ -1,0 +1,6 @@
+github.com:
+    git_protocol: ssh
+    users:
+        SirMonteiro:
+            git_protocol: ssh
+    user: SirMonteiro

@@ -1,0 +1,84 @@
+Host aur.archlinux.org
+	IdentityFile ~/.ssh/aur
+	User aur
+Host homelab
+   User gabriel
+   HostName 192.168.1.5
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+   AddKeysToAgent  yes
+Host ociarm
+   User ubuntu
+   HostName 168.138.133.66
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+   AddKeysToAgent  yes
+Host ociamd2
+   User ubuntu
+   HostName 193.123.112.109
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host ociamdwaterwall
+   User opc
+   HostName 193.123.114.90
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host ociarm2
+   User ubuntu
+   HostName 138.2.242.216
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+   AddKeysToAgent  yes
+Host ocieits
+   User ubuntu
+   HostName 146.235.45.122
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host ocimoore
+   User ubuntu
+   HostName 144.22.160.67
+   Port 2222
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host ociarmmaumau
+   User ubuntu
+   HostName 193.123.118.92
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host ipad
+   User root
+   HostName localhost
+   HostKeyAlgorithms=+ssh-rsa
+   Port 2222
+   IdentityFile ~/.ssh/ipad
+Host moore
+   User root
+   HostName 144.22.160.67
+   Port 22
+Host lerner
+   User root
+   HostName 144.22.160.67
+   Port 2223
+Host tildeteam
+   User sirmonteiro
+   HostName tilde.team
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host tildeteambsd
+   User sirmonteiro
+   HostName bsd.tilde.team
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host envs
+   User sirmonteiro
+   HostName envs.net
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host rwrs
+   User sirmonts
+   HostName rw.rs
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
+Host sdf
+   User sirmonteiro
+   HostName tty.sdf.org
+   Port 22

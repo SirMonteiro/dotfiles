@@ -1,0 +1,16 @@
+#!/bin/sh
+
+USER_JS="{{ joinPath .chezmoi.sourceDir "user.js" | quote }}"
+
+PROFILE_DIR=$(find ~/.mozilla/firefox -maxdepth 1 -type d -name "*.default-release" 2>/dev/null | head -n 1)
+FLATPAK_PROFILE_DIR=$(find ~/.var/app/org.mozilla.firefox/.mozilla/firefox -maxdepth 1 -type d -name "*.default-release" 2>/dev/null | head -n 1)
+
+# Copy the user.js into the profile directory
+if [ -n "$PROFILE_DIR" ]; then
+  cp "$USER_JS" "$PROFILE_DIR/user.js"
+elif [ -n "$FLATPAK_PROFILE" ]; then
+  cp "$USER_JS" "$FLATPAK_PROFILE_DIR/user.js"
+else
+  echo "No Firefox profile found."
+fi
+
