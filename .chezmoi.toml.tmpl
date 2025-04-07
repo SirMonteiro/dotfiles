@@ -1,0 +1,9 @@
+{{- $email := or (env "EMAIL") (promptStringOnce . "email" "Email address") -}}
+{{- $name := or (env "NAME") (promptStringOnce . "name" "Your name") -}}
+
+[data]
+    email = {{ $email | quote }}
+    name = {{ $name | quote }}
+
+[hooks.read-source-state.pre]
+    command = ".local/share/chezmoi/.install-password-manager.sh"

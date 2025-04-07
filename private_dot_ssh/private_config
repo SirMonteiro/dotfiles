@@ -82,3 +82,8 @@ Host sdf
    User sirmonteiro
    HostName tty.sdf.org
    Port 22
+Host tildepink
+   User sirmonteiro
+   HostName tilde.pink
+   Port 22
+   IdentityFile ~/.ssh/id_sirmonteiro
