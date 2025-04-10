@@ -1,0 +1,117 @@
+#!/bin/sh
+
+case $@ in
+  "-y") CONFIRM_ARG=-y ;;
+  "") CONFIRM_ARG='' ;;
+  *) echo "Usage: $0 [-y]"; exit 1 ;;
+esac
+
+update_command() {
+  CMD_NAME="${2%% *}"
+  if command -v $CMD_NAME > /dev/null; then
+    echo "📦Updating $1"
+    shift
+    eval "$@"
+  else
+    echo "$CMD_NAME is not installed. Skipping $1 update."
+  fi
+}
+
+_error() {
+  echo >&2 ":: $*"
+}
+
+_OSTYPE_detect() {
+  if [[ -r /etc/os-release ]]; then
+    source /etc/os-release
+    case "$ID" in
+      debian|ubuntu)
+        _OSTYPE="DPKG" && return ;;
+      arch)
+        _OSTYPE="PACMAN" && return ;;
+      fedora|rhel|centos)
+        _OSTYPE="YUM" && return ;;
+      alpine)
+        _OSTYPE="APK" && return ;;
+      opensuse*|suse)
+        _OSTYPE="ZYPPER" && return ;;
+      nixos)
+        _OSTYPE="NIX" && return ;;
+      void)
+        _OSTYPE="XBPS" && return ;;
+      gentoo)
+        _OSTYPE="PORTAGE" && return ;;
+      slackware)
+        _OSTYPE="SLACKPKG" && return ;;
+      clear-linux-os)
+        _OSTYPE="SWUPD" && return ;;
+      *)
+    esac
+
+    case "$ID_LIKE" in
+          *debian*|*ubuntu*)
+            _OSTYPE="DPKG" && return ;;
+          arch*)
+            _OSTYPE="PACMAN" && return ;;
+          *fedora*|*rhel*)
+            _OSTYPE="YUM" && return ;;
+          *suse*)
+            _OSTYPE="ZYPPER" && return ;;
+          *)
+        esac
+  fi
+
+  # Fallbacks
+  [[ -x "/usr/bin/apt-get" ]]     && _OSTYPE="DPKG" && return
+  [[ -x "/usr/bin/pacman" ]]      && _OSTYPE="PACMAN" && return
+  [[ -x "/usr/bin/yum" ]]         && _OSTYPE="YUM" && return
+  [[ -x "/usr/bin/zypper" ]]      && _OSTYPE="ZYPPER" && return
+  [[ -x "/usr/bin/apk" ]]         && _OSTYPE="APK" && return
+  [[ -x "/usr/bin/emerge" ]]      && _OSTYPE="PORTAGE" && return
+  [[ -x "/opt/local/bin/port" ]]  && _OSTYPE="MACPORTS" && return
+  command -v brew >/dev/null      && _OSTYPE="HOMEBREW" && return
+
+  _error "Could not detect supported package manager."
+  exit 1
+}
+
+_OSTYPE_detect
+
+# Package manager update
+case "$_OSTYPE" in
+  DPKG) update_command "APT Packages" "sudo apt update && sudo apt upgrade $CONFIRM_ARG" ;;
+  PACMAN) update_command "Pacman Packages" "sudo pacman -Syu" ;
+    if command -v paru >/dev/null; then
+      update_command "Paru Packages" "paru -Syu"
+    elif command -v yay >/dev/null; then
+      update_command "Yay Packages" "yay -Syu"
+    fi ;;
+  YUM)
+    if command -v dnf >/dev/null; then
+      update_command "DNF Packages" "sudo dnf check-update && sudo dnf upgrade $CONFIRM_ARG"
+    else
+      update_command "YUM Packages" "sudo yum check-update && sudo yum upgrade $CONFIRM_ARG"
+    fi ;;
+  ZYPPER) update_command "Zypper Packages" "sudo zypper refresh && sudo zypper update $CONFIRM_ARG" ;;
+  APK) update_command "APK Packages" "sudo apk update && sudo apk upgrade" ;;
+  NIX) update_command Nixpkgs "nix-channel --update $CONFIRM_ARG && nixos-rebuild switch --upgrade $CONFIRM_ARG" ;;
+  XBPS) update_command XBPS Packages "sudo xbps-install -Su $CONFIRM_ARG" ;;
+  PORTAGE) update_command Portage Packages "sudo emerge --sync $CONFIRM_ARG && sudo emerge --update --deep --newuse @world $CONFIRM_ARG" ;;
+  SLACKPKG) update_command Slackpkg Packages "slackpkg update gpg $CONFIRM_ARG && slackpkg upgrade-all $CONFIRM_ARG" ;;
+  SWUPD) update_command Swupd Packages "swupd autoupdate $CONFIRM_ARG" ;;
+  MACPORTS) update_command MacPorts "sudo port selfupdate $CONFIRM_ARG && sudo port upgrade outdated $CONFIRM_ARG" ;;
+  HOMEBREW) update_command Homebrew "brew update && brew upgrade && brew cleanup" ;;
+esac
+
+for role_git_dir in $(find /etc/ansible/roles -maxdepth 2 -name .git); do
+  role=$(dirname $role_git_dir)
+  git_repo=$(cd $role; git -c safe.directory=* remote get-url origin)
+  echo 📦Updating Ansible role $(basename $role)
+  sudo ansible-pull -o -U $git_repo -d $role $role/provision.yml
+done
+
+update_command Firmware "fwupdmgr get-updates $CONFIRM_ARG && fwupdmgr update $CONFIRM_ARG"
+update_command Flatpaks "flatpak update $CONFIRM_ARG && flatpak uninstall --unused $CONFIRM_ARG"
+update_command "asdf Plugins" "asdf plugin update --all"
+update_command "Node Packages" "npm update -g $(npm list -g --json | jq -r '.dependencies | keys | join(" ")')"
+update_command Dotfiles "chezmoi update"
