@@ -17,7 +17,8 @@
   "ui_font_size": 14.5,
   "vim_mode": true,
   "vim": {
-    "enable_vim_sneak": true
+    "enable_vim_sneak": true,
+    "use_system_clipboard": "always"
   },
   "relative_line_numbers": true,
   "indent_guides": {
