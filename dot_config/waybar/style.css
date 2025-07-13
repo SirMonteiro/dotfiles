@@ -1,0 +1,83 @@
+@define-color bar-bg rgba(0, 0, 0, 0);
+
+@define-color main-bg rgba(17, 17, 27, .5);
+@define-color main-fg #cdd6f4;
+
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 10px;
+    border: none;
+    margin: 0;
+    padding: 0;
+    min-height: 0;
+    border-radius: 7px;
+    font-weight: 700;
+}
+
+tooltip {
+    background: @main-bg;
+    color: @main-fg;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: #ffffff;
+}
+
+/* Workspaces */
+#workspaces {
+margin: 1px 0px;
+border-radius: 4px;
+background-color: @main-bg;
+color: @main-fg;
+
+}
+
+#workspaces button {
+margin: 1px 0px;
+border-radius: 4px;
+padding-left: 2px;
+padding-right: 2px;
+color: @fg;
+}
+
+#workspaces button.active {
+background-color: @main-fg;
+color: @bg;
+/*color: @bg;*/
+
+}
+
+#workspaces button.urgent {
+color: #F38BA8;
+}
+
+#mode {
+    background-color: #64727D;
+    border-top: 3px solid #ffffff;
+}
+
+#backlight,
+#battery,
+#bluetooth,
+#clock,
+#idle_inhibitor,
+/*#keyboard-state label.locked,*/
+#language,
+#network,
+#power-profiles-daemon,
+#pulseaudio,
+#temperature,
+#tray
+{
+    padding: 0 4px;
+    border-radius: 4px;
+    color: @main-fg;
+    background: @main-bg;
+    margin: 1px 0px;
+}
+
+#backlight {
+    padding-right: 6px;
+}
