@@ -87,3 +87,9 @@ Host tildepink
    HostName tilde.pink
    Port 22
    IdentityFile ~/.ssh/id_sirmonteiro
+Host bambansvps
+   User gabriel 
+   HostName 198.46.254.132
+   Port 22
+   IdentityFile ~/.ssh/id_ed25519_sk
+   IdentityFile ~/.ssh/id_sirmonteiro

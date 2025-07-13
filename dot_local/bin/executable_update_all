@@ -114,4 +114,4 @@ update_command Firmware "fwupdmgr get-updates $CONFIRM_ARG && fwupdmgr update $C
 update_command Flatpaks "flatpak update $CONFIRM_ARG && flatpak uninstall --unused $CONFIRM_ARG"
 update_command "asdf Plugins" "asdf plugin update --all"
 update_command "Node Packages" "npm update -g $(npm list -g --json | jq -r '.dependencies | keys | join(" ")')"
-update_command Dotfiles "chezmoi update"
+#update_command Dotfiles "chezmoi update"

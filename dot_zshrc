@@ -47,6 +47,7 @@ source ~/.local/share/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export PATH=/home/gabriel/.local/bin:$PATH
+export PATH=/home/gabriel/.cargo/bin:$PATH
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # rm with safeguard: https://github.com/sindresorhus/guides/blob/main/how-not-to-rm-yourself.md
@@ -62,11 +63,12 @@ bindkey "^A" vi-beginning-of-line
 bindkey "^E" vi-end-of-line
 
 alias ls="eza --icons"
-alias ll="eza --icons -l"
+alias ll="eza -la --sort name --group-directories-first --no-permissions --no-filesize --no-user --no-time"
 alias la="eza --icons -la"
 alias sl="ls"
 alias al="la"
 alias ncdu="ncdu --color off"
+alias tree="eza --icons --tree"
 alias yay="paru"
 #alias ssh="kitty +kitten ssh"
 alias ssh="TERM=xterm-256color ssh"
