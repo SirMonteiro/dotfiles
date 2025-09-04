@@ -7,7 +7,7 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "theme": "Catppuccin Mocha",
+  "theme": "Catppuccin Mocha (Blur)",
   "icon_theme": "Catppuccin Mocha",
   "features": {
     "edit_prediction_provider": "copilot"
@@ -25,16 +25,14 @@
     "enabled": true,
     "coloring": "indent_aware"
   },
-  "assistant": {
+  "agent": {
     "default_model": {
       "provider": "copilot_chat",
       "model": "gpt-4o"
-    },
-    "version": "2"
+    }
   },
   "language_models": {
     "openai": {
-      "version": "1",
       "api_url": "https://api.groq.com/openai/v1",
       "available_models": [
         {

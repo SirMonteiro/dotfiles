@@ -3,7 +3,7 @@
 #	exec startplasma-wayland
 #	exit
 #fi
-if [ "$(tty)" = "/dev/tty2" ]; then
+if [ "$(tty)" = "/dev/tty1" ]; then
 	exec Hyprland
 fi
 
@@ -41,13 +41,14 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
-source ~/.local/share/powerlevel10k/powerlevel10k.zsh-theme
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 export PATH=/home/gabriel/.local/bin:$PATH
 export PATH=/home/gabriel/.cargo/bin:$PATH
+export PATH=/home/gabriel/.local/share/gem/ruby/3.4.0/bin:$PATH
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # rm with safeguard: https://github.com/sindresorhus/guides/blob/main/how-not-to-rm-yourself.md
@@ -94,6 +95,10 @@ function pix() {
     jq '.qrstring' | tail -c +2 | head -c -2 | qrencode -t ansiutf8
 }
 
-source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Fish-like syntax highlighting and autosuggestions
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# mise
+eval "$(env mise activate zsh)"
 

@@ -1,7 +1,7 @@
 [user]
 	email = {{ .email }}
 	name = {{ .name }}
-	signingkey = C47FF38A79A3E3AC96DDCE4AA64E5B0F74A14F80
+	signingkey = B28C421EE6561C1CBD35A7F2F85B4384F1A4C229
 [init]
 	defaultBranch = main
 [commit]
@@ -18,3 +18,11 @@
 	autocorrect = prompt
 [branch]
 	sort = -committerdate
+[pull]
+    rebase = true
+[alias]
+    co = checkout
+    br = branch
+    ci = commit
+    st = status
+

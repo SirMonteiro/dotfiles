@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # exit immediately if password-manager-binary is already in $PATH and is already logged in
-type bw >/dev/null 2>&1 && bw login --check && exit
+type bw >/dev/null 2>&1 && { [ -n "${BW_SESSION}" ] || bw login --check; } && exit 0
 
 INSTALLATION_DIR=~/.local/bin
 TMP_FILE=/tmp/bitwardenCLI.zip

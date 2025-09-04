@@ -43,7 +43,8 @@
 # resize-overlay-duration = 4s 200ms
 
 theme = catppuccin-mocha
-font-family = "Monaspace Argon"  
+font-family = "MonaspiceAr Nerd Font Mono"
+font-size = 11
 background-opacity = 0.8
 background-blur = 20
 maximize = true
