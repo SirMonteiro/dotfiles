@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exit 0 # Bypass this script tmp to use ansible for this
+
 git clone --depth 1 https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme.git /tmp/catppuccin-gtk
 cd /tmp/catppuccin-gtk/themes
 ./install.sh -l -s compact -t mauve teal
