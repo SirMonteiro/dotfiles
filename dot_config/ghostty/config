@@ -48,4 +48,5 @@ font-size = 11
 background-opacity = 0.8
 background-blur = 20
 maximize = true
+gtk-single-instance = true
 

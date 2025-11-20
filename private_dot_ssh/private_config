@@ -93,3 +93,6 @@ Host bambansvps
    Port 22
    IdentityFile ~/.ssh/id_ed25519_sk
    IdentityFile ~/.ssh/id_sirmonteiro
+Host paas
+  HostName 168.138.133.66
+  Port 3022
