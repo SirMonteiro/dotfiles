@@ -4,7 +4,7 @@
 #	exit
 #fi
 if [ "$(tty)" = "/dev/tty1" ]; then
-	exec Hyprland
+	exec start-hyprland
 fi
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
@@ -19,12 +19,19 @@ HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=10000
 setopt autocd
+setopt append_history
+setopt hist_expire_dups_first
+setopt hist_ignore_space
+setopt hist_no_store
+setopt hist_verify
+setopt inc_append_history
+setopt share_history
 bindkey -v
 # End of lines configured by zsh-newuser-install
 
 # The following lines were added by compinstall
 
-fpath=(/usr/share/zsh/site-functions $fpath)
+fpath=(~/.zsh/ /usr/share/zsh/site-functions $fpath)
 fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
 
 zstyle ':completion:*' menu select
@@ -36,6 +43,8 @@ zstyle ':completion:*:(ssh|scp|rsync):*:hosts-ipaddr' ignored-patterns '^(<->.<-
 
 zstyle ':completion:*' completer _complete _ignored
 zstyle :compinstall filename '/home/gabriel/.zshrc'
+
+[[ -f /usr/share/fzf/completion.zsh ]] && source /usr/share/fzf/completion.zsh
 
 autoload -Uz compinit
 compinit
@@ -61,6 +70,20 @@ export BAT_STYLE="numbers"
 
 bindkey "^A" vi-beginning-of-line
 bindkey "^E" vi-end-of-line
+
+# bindkeys commands from https://stratus3d.com/blog/2017/10/26/better-vi-mode-in-zshell/
+# Better searching in command mode
+bindkey -M vicmd '?' fzf-history-widget
+bindkey -M vicmd '/' history-incremental-search-forward
+
+# Beginning search with arrow keys
+bindkey "^[OA" up-line-or-beginning-search
+bindkey "^[OB" down-line-or-beginning-search
+bindkey -M vicmd "k" up-line-or-beginning-search
+bindkey -M vicmd "j" down-line-or-beginning-search
+
+# Make Vi mode transitions faster (KEYTIMEOUT is in hundredths of a second)
+export KEYTIMEOUT=1
 
 alias ls="eza --icons --group-directories-first"
 alias ll="eza -la --sort name --group-directories-first --no-permissions --no-filesize --no-user --no-time"
@@ -97,6 +120,8 @@ function pix() {
 # Fish-like syntax highlighting and autosuggestions
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+[[ -f /usr/share/fzf/key-bindings.zsh ]] && source /usr/share/fzf/key-bindings.zsh
 
 # mise
 eval "$(env mise activate zsh)"
