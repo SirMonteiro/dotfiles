@@ -1,26 +1,32 @@
 #!/bin/sh
 
-exit 0 # Bypass this script tmp to use ansible for this
+#exit 0 # Bypass this script tmp to use ansible for this
 
 git clone --depth 1 https://github.com/Fausto-Korpsvart/Catppuccin-GTK-Theme.git /tmp/catppuccin-gtk
 cd /tmp/catppuccin-gtk/themes
 ./install.sh -l -s compact -t mauve teal
+gsettings set org.gnome.desktop.interface color-scheme prefer-dark
 flatpak override --user --filesystem=$HOME/.themes
 flatpak override --user --filesystem=xdg-config/gtk-4.0
+nwg-look -a
 
 git clone --depth 1 https://github.com/catppuccin/Kvantum.git /tmp/catppuccin-kvantum
 CATPPUCCIN_FOLDER=/tmp/catppuccin-kvantum/themes
-cp -r $CATPPUCCIN_FOLDER/catppuccin-mocha-* $CATPPUCCIN_FOLDER/catppuccin-latte-* ~/.config/Kvantum/
+mkdir -p $HOME/.config/Kvantum
+cp -r $CATPPUCCIN_FOLDER/catppuccin-mocha-* $CATPPUCCIN_FOLDER/catppuccin-latte-* $HOME/.config/Kvantum/
+kvantummanager --set catppuccin-mocha-teal
 
 CATPPUCCIN_COLORS=`mktemp -d`
 cd $CATPPUCCIN_COLORS
 curl -LO https://github.com/catppuccin/kde/releases/latest/download/Mocha-color-schemes.tar.gz
 tar xf Mocha-color-schemes.tar.gz && rm -f Mocha-color-schemes.tar.gz
+mkdir -p $HOME/.local/share/color-schemes
 cp Mocha-color-schemes/* $HOME/.local/share/color-schemes
 
 #paru -S --needed papirus-folders-catppuccin-git
 papirus-folders -C cat-mocha-teal --theme Papirus-Dark
 
 git clone --depth 1 https://github.com/catppuccin/konsole.git /tmp/catppuccin-konsole
+mkdir -p $HOME/.local/share/konsole
 cp /tmp/catppuccin-konsole/themes/* $HOME/.local/share/konsole
 
